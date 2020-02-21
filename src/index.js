@@ -1,0 +1,38 @@
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.scss";
+
+import "./fontawesome";
+import "./util/typography";
+
+//Start components
+import App from "./App";
+import ApolloClient from "apollo-boost";
+import { ApolloProvider } from "@apollo/react-hooks";
+
+//shared
+import { tokenCache } from "./hooks/wp-graphql-token";
+
+export const client = new ApolloClient({
+  uri: BASE_URL + "graphql",
+  request: operation => {
+    if (tokenCache.token) {
+      console.log("Client operation setting context...");
+      operation.setContext({
+        headers: {
+          authorization: `Bearer ${tokenCache.token}`
+        }
+      });
+    }
+  }
+});
+
+const target = document.querySelector("#root");
+if (target) {
+  ReactDOM.render(
+    <ApolloProvider client={client}>
+      <App />
+    </ApolloProvider>,
+    target
+  );
+}

@@ -1,0 +1,39 @@
+.Form {
+    width: 100%;
+    border-radius: 5px;
+    display: flex;
+    flex-flow: column;
+    background-color: inherit;
+
+    &__status {
+        padding: 1rem;
+
+        &.-success {
+            background-color: rgb(170, 230, 138);
+            color: rgb(52, 148, 1);
+            padding: 15px;
+        }
+
+        &.-error {
+            background-color: rgb(230, 138, 138);
+            color: rgb(148, 18, 1);
+        }
+    }
+
+    &__submitBtn {
+        box-sizing: border-box;
+        cursor: pointer;
+        border: none;
+        border-radius: 4px;
+        background-color: transparent;
+        -webkit-tap-highlight-color: transparent;
+        color: rgb(26, 115, 232);
+        height: 40px;
+        padding: 0 15px;
+        transition: all .15s ease;
+
+        &:hover {
+            background-color: rgb(210, 223, 245);
+        }
+    }
+}
