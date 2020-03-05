@@ -6,6 +6,8 @@ import Checkbox from "./checkbox";
 import File from "./file";
 import Select from "./select";
 import Textarea from "./textarea";
+import DatePicker from "./datepicker";
+import Toggle from "./toggle";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -24,8 +26,8 @@ const Input = props => {
   };
 
   //Handle which input element to return
-  if (props.htmlTag) {
-    switch (props.htmlTag) {
+  if (props.elType) {
+    switch (props.elType) {
       case "input":
         switch (props.elementConfig.type) {
           case "file":
@@ -42,19 +44,22 @@ const Input = props => {
             break;
           default:
             inputElement = (
-              <input
-                className="Input__inputEl"
-                {...props.elementConfig}
-                value={props.state[props.inputKey]}
-                onChange={event =>
-                  props.handler(props.inputKey, event.target.value)
-                }
-                onFocus={focusHandler}
-                onBlur={focusHandler}
-              />
+              <>
+                <input
+                  className="Input__inputEl"
+                  {...props.elementConfig}
+                  value={props.state[props.inputKey]}
+                  onChange={event =>
+                    props.handler(props.inputKey, event.target.value)
+                  }
+                  onFocus={focusHandler}
+                  onBlur={focusHandler}
+                />
+                <div className="Input__line"></div>
+              </>
             );
         }
-        break; // end 'input' htmlTag
+        break; // end 'input' elType
       case "textarea":
         inputElement = (
           <Textarea
@@ -83,10 +88,33 @@ const Input = props => {
         inputElement = (
           <Checkbox
             state={props.state}
-            initialValue={props.initialValue}
             handler={props.handler}
             inputKey={props.inputKey}
             elementConfig={props.elementConfig}
+            focusHandler={focusHandler}
+          />
+        );
+        break;
+
+      case "toggle":
+        inputElement = (
+          <Toggle
+            state={props.state}
+            handler={props.handler}
+            inputKey={props.inputKey}
+            focusHandler={focusHandler}
+          />
+        );
+        break;
+
+      case "datepicker":
+        inputElement = (
+          <DatePicker
+            state={props.state}
+            initialValue={props.initialValue}
+            handler={props.handler}
+            elementConfig={props.elementConfig}
+            inputKey={props.inputKey}
             focusHandler={focusHandler}
           />
         );
@@ -98,16 +126,19 @@ const Input = props => {
 
       default:
         inputElement = (
-          <input
-            className="Input__inputEl"
-            {...props.elementConfig}
-            value={props.state[props.inputKey]}
-            onChange={event =>
-              props.handler(props.inputKey, event.target.value)
-            }
-            onFocus={focusHandler}
-            onBlur={focusHandler}
-          />
+          <>
+            <input
+              className="Input__inputEl"
+              {...props.elementConfig}
+              value={props.state[props.inputKey]}
+              onChange={event =>
+                props.handler(props.inputKey, event.target.value)
+              }
+              onFocus={focusHandler}
+              onBlur={focusHandler}
+            />
+            <div className="Input__line"></div>
+          </>
         );
     }
   } // end switch case for normal inputs
@@ -137,17 +168,13 @@ const Input = props => {
     }
   }
 
-  let line;
-  if (props.elementConfig.type !== "file") {
-    line = <div className="Input__line"></div>;
-  }
-
   return (
     <div className="Input">
       <label className="Input__label">
         {props.label}
         {iconLabel}
       </label>
+      <span style={{ fontStyle: "italic" }}>{props.description}</span>
       <section
         className={`Input__slot -relative ${
           props.iconConfig.position === "inside" ? " -withIcon" : ""
@@ -155,15 +182,15 @@ const Input = props => {
       >
         {inputElement}
         {iconInput}
-        {line}
       </section>
     </div>
   );
 };
 
 Input.propTypes = {
-  htmlTag: PropTypes.string.isRequired,
+  elType: PropTypes.string.isRequired,
   label: PropTypes.string,
+  description: PropTypes.string,
   handler: PropTypes.func.isRequired
 };
 
