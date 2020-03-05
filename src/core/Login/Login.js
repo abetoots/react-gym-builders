@@ -10,13 +10,14 @@ import BoundaryRedirect from "../../hoc/BoundaryRedirect/BoundaryRedirect";
 //Fetch
 import { useLazyLoginMutation } from "../../hooks/wp-graphql-token";
 
-import inputs, { useFormState, getHandler } from "../../util/forms/login";
+import inputs, { useFormState } from "../../misc/forms/login";
 import { useStore } from "../../hooks/store/store";
+import { getLoginMutation } from "../../misc/constants";
 
 const Login = props => {
-  const [formState, formUpdate] = useFormState();
-  const [state, dispatch] = useStore();
-  const [startLogin, setQuery] = useLazyLoginMutation(dispatch);
+  const [formState, setFormState] = useFormState();
+  const [globalState, dispatch] = useStore("token");
+  const [startLogin] = useLazyLoginMutation(dispatch);
   const [error, setError] = useState("");
 
   const submitHandler = e => {
@@ -26,54 +27,38 @@ const Login = props => {
     if (!login && !password) {
       return setError("Login & Password not set");
     }
-    setQuery(`
-    mutation LoginUser{
-      login(
-        input: {
-          clientMutationId: ""
-          username: "${login}"
-          password: "${password}"
-        }
-      ) {
-        authToken
-        refreshToken
-        user {
-          jwtAuthExpiration
-        }
-      }
-    }
-  `);
-    startLogin();
+    startLogin(getLoginMutation(login, password));
   };
 
   return (
     <Layout
       mainStyle={{
-        minWidth: "400px",
-        maxWidth: "50%",
+        maxWidth: "500px",
         margin: "0 auto",
         display: "flex",
         alignItems: "center"
       }}
     >
       <BoundaryRedirect
-        if={state.calledLogin && state.loggedIn}
+        if={globalState.calledLogin && globalState.loggedIn}
         ifTrueTo="/dashboard"
       />
       <Form
         handleSubmit={submitHandler}
-        loading={state.loadingLogin}
-        error={error || state.errorLogin}
+        loading={globalState.loadingLogin}
+        error={error || globalState.errorLogin.output}
       >
         {inputs.map(input => {
           return (
             <Input
               state={formState}
-              handler={getHandler(formUpdate)}
+              handler={(inputKey, inputValue) =>
+                setFormState(inputKey, inputValue)
+              }
               key={input.key}
               inputKey={input.key}
               label={input.label}
-              htmlTag={input.htmlTag}
+              elType={input.elType}
               initialValue={input.initialValue}
               elementConfig={input.elementConfig}
               customProps={input.customProps || ""}
