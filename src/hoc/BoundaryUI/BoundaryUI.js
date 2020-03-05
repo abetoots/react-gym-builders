@@ -20,8 +20,34 @@ const Boundary = props => {
     );
   }
 
-  if (props.error) {
-    return <div>{`${props.error}`}</div>;
+  //Errors meant to be shown to the user
+  if (props.errorShow) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          height: "100%",
+          alignItems: "center"
+        }}
+      >{`${props.errorShow}`}</div>
+    );
+  }
+
+  if (props.errorGeneric) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          height: "100%",
+          alignItems: "center"
+        }}
+      >
+        <span role="img" alt="something went wrong">
+          🤷
+        </span>
+        Something went wrong. Try contacting your developer
+      </div>
+    );
   }
 
   return props.children;
@@ -29,7 +55,8 @@ const Boundary = props => {
 
 Boundary.propTypes = {
   loading: PropTypes.bool,
-  error: PropTypes.string
+  errorShow: PropTypes.string,
+  errorGeneric: PropTypes.bool
 };
 
 export default Boundary;
