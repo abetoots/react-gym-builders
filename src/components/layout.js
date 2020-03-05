@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
 import Header from "./Header/Header";
@@ -19,7 +19,7 @@ const Layout = props => {
           alignItems: "center"
         }}
       >
-        <Spinner2 />;
+        <Spinner2 />
       </div>
     );
   }
@@ -33,7 +33,7 @@ const Layout = props => {
       <Header />
       <main
         style={{
-          height: "100%",
+          minHeight: `calc(100vh - 143px)`,
           ...props.mainStyle
         }}
       >
