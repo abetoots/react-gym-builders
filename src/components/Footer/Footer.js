@@ -13,7 +13,12 @@ const Footer = props => (
         🛠️
       </span>
       Built by:Abe Suni M. Caymo
-      <a className="Footer__projectLink" href="https://github.com/abetoots">
+      <a
+        className="Footer__projectLink"
+        href="https://github.com/abetoots"
+        target="_blank"
+        rel="noreferrer noopener"
+      >
         <i className="fas fa-globe"></i>
       </a>
     </div>
