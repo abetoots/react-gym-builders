@@ -9,45 +9,54 @@ import BoundaryUI from "./hoc/BoundaryUI/BoundaryUI";
 import BoundaryRedirect from "./hoc/BoundaryRedirect/BoundaryRedirect";
 
 //Shared, globals, utils
-import configureTokenStore from "./hooks/store/token-store";
-import { useStore } from "./hooks/store/store";
-import { list } from "./util/link-list";
-import { uniqueRoutes } from "./util/util";
-import { useRefreshToken, REFTOKEN } from "./hooks/wp-graphql-token";
+import tokenStore from "./hooks/store/token-store";
+import userStore from "./hooks/store/users-store";
+import { useStore, combineStore } from "./hooks/store/store";
+import { list } from "./misc/link-list";
+import { uniqueRoutes } from "./misc/util";
+import { useRefreshToken } from "./hooks/wp-graphql-token";
+import { REFRESH_TOKEN } from "./misc/constants";
 
-configureTokenStore("tokenStore");
+combineStore({
+  token: tokenStore,
+  users: userStore
+});
 
 const App = () => {
   const routes = uniqueRoutes(list.flat());
-  const [state, dispatch] = useStore();
+  const [globalState, dispatch] = useStore("token");
+  const [mounted, setMounted] = useState(false);
 
   const [
+    startRefresh,
     { loadingRefresh, called },
     { successRefresh, data },
-    errorRefresh,
-    startRefresh
+    { errorRefresh }
   ] = useRefreshToken();
 
-  //ComponentDidMount
   useEffect(() => {
     //if we found a refresh token
-    if (localStorage.getItem(REFTOKEN)) {
-      startRefresh();
-    }
-
     if (successRefresh) {
       dispatch("LOGIN_SUCCESS", data);
     }
   }, [successRefresh]);
+  //ComponentDidMount
+  //run only once
+  useEffect(() => {
+    if (localStorage.getItem(REFRESH_TOKEN)) {
+      startRefresh();
+    }
+    setMounted(true);
+  }, []);
 
   return (
     <BrowserRouter>
       <BoundaryUI loading={loadingRefresh}>
-        <RoutesList routes={routes} />
+        {mounted ? <RoutesList routes={routes} /> : ""}
         <BoundaryRedirect if={called && successRefresh} ifTrueTo="/dashboard" />
         <BoundaryRedirect if={called && errorRefresh} ifTrueTo="/login" />
         <BoundaryRedirect
-          if={!state.calledLogin && !state.loggedIn}
+          if={!globalState.calledLogin && !globalState.loggedIn}
           ifTrueTo="/login"
         />
       </BoundaryUI>
