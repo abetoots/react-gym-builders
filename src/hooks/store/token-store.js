@@ -1,5 +1,6 @@
 import { initStore } from "./store";
-import { tokenCache, REFTOKEN, EXPDATE } from "../wp-graphql-token";
+import { tokenCache } from "../wp-graphql-token";
+import { cleanupLocalStorage } from "../../misc/util";
 
 /**
  * Think of this as a reducer similar to redux
@@ -13,28 +14,40 @@ const initialState = {
   loadingLogin: false,
   calledLogin: false,
   loggedIn: false,
-  errorLogin: "",
-  data: []
+  errorLogin: {
+    //errors meant for the developer
+    errorDev: null,
+    //errors meant for the user UI
+    output: ""
+  },
+  dataLogin: []
 };
 
-const configureTokenStore = () => {
+const configureStore = listenerKey => {
   const actions = {
     LOGIN_START: state => ({ loadingLogin: true, calledLogin: true }),
     LOGIN_SUCCESS: (state, data) => ({
+      ...initialState,
       loadingLogin: false,
-      data: data,
+      dataLogin: data,
       loggedIn: true
     }),
-    LOGIN_FAIL: (state, err) => ({ loadingLogin: false, errorLogin: err }),
+    LOGIN_FAIL: (state, errorDispatch) => {
+      console.log("[Dispatch Error]: LOGIN_FAIL ", [errorDispatch.errorDev]);
+      return {
+        ...initialState,
+        loadingLogin: false,
+        errorLogin: { ...state.errorLogin, ...errorDispatch }
+      };
+    },
     LOGOUT: state => {
       tokenCache.token = null;
-      localStorage.removeItem(REFTOKEN);
-      localStorage.removeItem(EXPDATE);
-      return { loggedIn: false, data: [], calledLogin: false };
+      cleanupLocalStorage();
+      return { loggedIn: false, dataLogin: [], calledLogin: false };
     }
   };
 
-  initStore(initialState, actions);
+  initStore(initialState, actions, listenerKey);
 };
 
-export default configureTokenStore;
+export default configureStore;
