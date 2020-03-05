@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.scss";
 
 import "./fontawesome";
-import "./util/typography";
+import "./misc/typography";
 
 //Start components
 import App from "./App";
@@ -17,7 +17,6 @@ export const client = new ApolloClient({
   uri: BASE_URL + "graphql",
   request: operation => {
     if (tokenCache.token) {
-      console.log("Client operation setting context...");
       operation.setContext({
         headers: {
           authorization: `Bearer ${tokenCache.token}`
