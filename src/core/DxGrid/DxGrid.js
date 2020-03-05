@@ -50,9 +50,9 @@ import {
 } from "./data/filtering";
 
 //Shared
-import { tokenCache } from "../../hooks/wp-graphql-token";
+import { tokenCache } from "../../hooks/auth";
 import { useLazyFetchQuery } from "../../hooks/util";
-import { useStore } from "../../hooks/store/store";
+import { useStore } from "../../store/store";
 
 import {
   GET_GYM_MEMBERS_QUERY,

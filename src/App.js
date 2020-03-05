@@ -9,12 +9,12 @@ import BoundaryUI from "./hoc/BoundaryUI/BoundaryUI";
 import BoundaryRedirect from "./hoc/BoundaryRedirect/BoundaryRedirect";
 
 //Shared, globals, utils
-import tokenStore from "./hooks/store/token-store";
-import userStore from "./hooks/store/users-store";
-import { useStore, combineStore } from "./hooks/store/store";
+import tokenStore from "./store/token-store";
+import userStore from "./store/users-store";
+import { useStore, combineStore } from "./store/store";
 import { list } from "./misc/link-list";
 import { uniqueRoutes } from "./misc/util";
-import { useRefreshToken } from "./hooks/wp-graphql-token";
+import { useRefreshToken } from "./hooks/auth";
 import { REFRESH_TOKEN } from "./misc/constants";
 
 combineStore({

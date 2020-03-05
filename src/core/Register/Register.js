@@ -5,9 +5,9 @@ import Layout from "../../components/layout";
 import Form from "../../components/UI/Form/Form";
 import Input from "../../components/UI/Input/Input";
 
-import { useStore } from "../../hooks/store/store";
+import { useStore } from "../../store/store";
 import inputs, { useFormState } from "../../misc/forms/register";
-import { tokenCache } from "../../hooks/wp-graphql-token";
+import { tokenCache } from "../../hooks/auth";
 import { useLazyFetchQuery } from "../../hooks/util";
 import { getCreateMemberMutation, GYM_MEMBER } from "../../misc/constants";
 

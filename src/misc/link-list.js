@@ -1,4 +1,4 @@
-import { tokenCache } from "../hooks/wp-graphql-token";
+import { tokenCache } from "../hooks/auth";
 
 import Login from "../core/Login/Login";
 import Logout from "../core/Logout/Logout";

@@ -8,10 +8,10 @@ import Input from "../../components/UI/Input/Input";
 import BoundaryRedirect from "../../hoc/BoundaryRedirect/BoundaryRedirect";
 
 //Fetch
-import { useLazyLoginMutation } from "../../hooks/wp-graphql-token";
+import { useLazyLoginMutation } from "../../hooks/auth";
 
 import inputs, { useFormState } from "../../misc/forms/login";
-import { useStore } from "../../hooks/store/store";
+import { useStore } from "../../store/store";
 import { getLoginMutation } from "../../misc/constants";
 
 const Login = props => {

@@ -11,7 +11,7 @@ import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "@apollo/react-hooks";
 
 //shared
-import { tokenCache } from "./hooks/wp-graphql-token";
+import { tokenCache } from "./hooks/auth";
 
 export const client = new ApolloClient({
   uri: BASE_URL + "graphql",
