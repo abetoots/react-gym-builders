@@ -6,10 +6,13 @@ import PropTypes from "prop-types";
  * 2) Listeners should be full of functions that we can call to update all components that are using this hook
  */
 let globalState = {};
-let listeners = [];
+let listeners = {};
 let actions = {};
 
-export const useStore = () => {
+/**
+ *
+ */
+export const useStore = listenTo => {
   //Every component that uses this hook gets its own setState function
   const [, setState] = useState(globalState);
 
@@ -22,20 +25,81 @@ export const useStore = () => {
     const newState = actions[actionType](globalState, payload);
     globalState = { ...globalState, ...newState };
 
-    for (const listener of listeners) {
-      //Each listener (a setState function for every component that uses this hook)
-      //will now update using the new globalState causing a rerender for those components
-      listener(globalState);
+    //trigger the appropriate listeners (setState functions) based on 'listenTo' to update with the new global state
+    //if an array of listener keys...
+    if (Array.isArray(listenTo)) {
+      //...for each key
+      listenTo.forEach(key => {
+        //...we trigger all the listeners under that key
+        listeners[key].forEach(listener => {
+          //...to update with the new global state
+          listener(globalState);
+        });
+      });
+    } else if (!listenTo) {
+      //if not defined, then we want to trigger ALL listeners
+      //for every key of our listeners object...
+      for (let key of Object.keys(listeners)) {
+        //...we trigger all the listeners under that key
+        listeners[key].forEach(listener => {
+          listener(globalState);
+        });
+      }
+    } else if (typeof listenTo === "string") {
+      //Default behavior is 'listenTo' is a single key string
+      //Only the listeners under that key ...
+      listeners[listenTo].forEach(listener => {
+        //...will now update using the new global state
+        listener(globalState);
+      });
+      //causing a rerender for all components subscribed to the same 'listenTo' key/keys
     }
   };
 
-  //When a component that uses this hook mounts (componentDidMount), register it's own setState to our listeners
+  //When a component that uses this hook mounts (componentDidMount), register it's own setState to the appropriate
+  //part of listeners we want to listen to based on 'listenTo' param
   useEffect(() => {
-    listeners.push(setState);
+    //if an array of listener keys...
+    if (Array.isArray(listenTo)) {
+      //...for each key
+      listenTo.forEach(key => {
+        //subscribe our listener to that key
+        listeners[key].push(setState);
+      });
+    } else if (!listenTo) {
+      //if not defined, then we want to subscribe to ALL listener keys
+      //for every key of our listeners object...
+      for (let key of Object.keys(listeners)) {
+        //subscribe our listener to that key
+        listeners[key].push(setState);
+      }
+    } else if (typeof listenTo === "string") {
+      //Default behavior is 'listenTo' is a single key string
+      //subscribe our listener to that key
+      listeners[listenTo].push(setState);
+    }
 
     // Cleanup: When a component that uses this hook unmounts, remove that component's setState from listeners
     return () => {
-      listeners = listeners.filter(li => li !== setState);
+      //if an array of listener keys...
+      if (Array.isArray(listenTo)) {
+        //...for each key
+        listenTo.forEach(key => {
+          //sunubscribe our listener from that key
+          listeners[key] = listeners[key].filter(li => li !== setState);
+        });
+      } else if (!listenTo) {
+        //if not defined, then we want to unsubscribe from ALL listener keys
+        //for every key of our listeners object...
+        for (let key of Object.keys(listeners)) {
+          //subscribe our listener to that key
+          listeners[key] = listeners[key].filter(li => li !== setState);
+        }
+      } else if (typeof listenTo === "string") {
+        //Default behavior is 'listenTo' is a single key string
+        //unsubscribe our listener from that key
+        listeners[listenTo] = listeners[listenTo].filter(li => li !== setState);
+      }
     };
   }, [setState]);
 
@@ -43,15 +107,26 @@ export const useStore = () => {
 };
 
 //In redux, this is basically the reducer. Instead of exporting this, we call it instead.
-export const initStore = (initialState, userActions) => {
+export const initStore = (initialState, userActions, listenerKey) => {
   if (initialState) {
     globalState = { ...globalState, ...initialState };
   }
 
   actions = { ...actions, ...userActions };
-};
 
+  listeners[listenerKey] = [];
+};
 initStore.propTypes = {
   initialState: PropTypes.object,
-  userActions: PropTypes.func
+  userActions: PropTypes.func,
+  listenerKey: PropTypes.string
+};
+
+export const combineStore = stores => {
+  for (let [key, configurateStore] of Object.entries(stores)) {
+    configurateStore(key);
+  }
+};
+combineStore.propTypes = {
+  stores: PropTypes.objectOf(PropTypes.func)
 };
