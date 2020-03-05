@@ -2,6 +2,7 @@ import { tokenCache } from "../hooks/wp-graphql-token";
 
 import Login from "../core/Login/Login";
 import Logout from "../core/Logout/Logout";
+import Register from "../core/Register/Register";
 import GraphQL from "../core/GraphiQlWrap/GraphiQlWrap";
 import asyncComponent from "../hoc/asyncComponent/asyncComponent";
 
@@ -51,6 +52,12 @@ export const authLinkList = [
     exact: true,
     component: Logout,
     label: "Logout"
+  },
+  {
+    path: "/register",
+    exact: true,
+    component: Register,
+    label: "Register"
   }
 ];
 
