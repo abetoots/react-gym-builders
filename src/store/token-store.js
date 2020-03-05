@@ -1,5 +1,5 @@
 import { initStore } from "./store";
-import { tokenCache } from "../wp-graphql-token";
+import { tokenCache } from "../auth";
 import { cleanupLocalStorage } from "../../misc/util";
 
 /**
