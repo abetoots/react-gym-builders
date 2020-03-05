@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import "./header.scss";
 
-import { getLinkList } from "../../util/link-list";
+import { getLinkList } from "../../misc/link-list";
 
 import Logo from "../UI/Logo/Logo";
 import BurgerMenu from "../UI/BurgerMenu/BurgerMenu";
@@ -42,7 +42,13 @@ const Header = props => {
       </header>
       <div ref={targetElToDisplay} className="HeaderWrap__slot -menu">
         <div ref={target}>
-          <Menu linklist={getLinkList()} toggled={menuToggled} />
+          <Menu
+            linklist={getLinkList()}
+            toggled={menuToggled}
+            touchTargetStyles={{
+              borderBottom: "1px solid #ccc"
+            }}
+          />
         </div>
       </div>
     </section>

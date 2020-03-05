@@ -21,7 +21,10 @@ const Menu = props => {
         {props.linklist.map(item => (
           <li className="Menu__li" key={item.path}>
             <NavLink to={item.path} exact={item.exact} className="Menu__link">
-              <div className="Menu__touchTarget">
+              <div
+                className="Menu__touchTarget"
+                style={{ ...props.touchTargetStyles }}
+              >
                 <span>{item.label}</span>
               </div>
             </NavLink>
@@ -47,7 +50,8 @@ Menu.propTypes = {
   label: PropTypes.string,
   horizontal: PropTypes.bool,
   linklist: PropTypes.array,
-  visible: PropTypes.bool
+  visible: PropTypes.bool,
+  touchTargetStyles: PropTypes.object
 };
 
 export default Menu;
