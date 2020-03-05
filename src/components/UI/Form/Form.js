@@ -30,7 +30,7 @@ const Form = props => {
     <form
       className="Form"
       onSubmit={props.handleSubmit}
-      style={{ ...props.style }}
+      style={{ ...props.formStyles }}
     >
       {
         // eslint-disable-next-line react/prop-types
