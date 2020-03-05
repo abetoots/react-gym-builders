@@ -3,158 +3,258 @@ import Paper from "@material-ui/core/Paper";
 
 //Apollo
 import { useLazyQuery } from "@apollo/react-hooks";
-import { gql } from "apollo-boost";
 
 //Components
 import Layout from "../../components/layout";
-import BoundaryRedirect from "../../hoc/BoundaryRedirect/BoundaryRedirect";
+import Spinner3 from "../../components/UI/Spinner/Spinner3";
 
-//Dx React Grid Components
+//DX Grid Core Components
 import {
   Grid,
   Table,
   TableHeaderRow,
-  TableSelection,
-  PagingPanel
+  PagingPanel,
+  Toolbar,
+  SearchPanel,
+  TableFilterRow,
+  TableEditRow,
+  TableEditColumn
 } from "@devexpress/dx-react-grid-material-ui";
 
-//TODO maybe format the data server side to prevent doing everything here
+//DX Grid Core Plugins
 import {
-  StudentTypeProvider,
-  GymRoleProvider,
-  GenderProvider,
-  BirthdateProvider,
-  BranchProvider,
-  RegistrationProvider
-} from "../DataFormatters/providers";
-
-//Plugins
-import {
-  SelectionState,
   PagingState,
   SortingState,
   IntegratedPaging,
-  IntegratedSelection,
-  IntegratedSorting
+  IntegratedSorting,
+  SearchState,
+  EditingState,
+  FilteringState,
+  IntegratedFiltering
 } from "@devexpress/dx-react-grid";
 
+//DX Grid Customizations
+//TODO maybe format the data server side to prevent doing everything here
 import {
-  useLazyLoginMutation,
-  tokenCache,
-  useRefreshToken
-} from "../../hooks/wp-graphql-token";
+  StudentTypeProvider,
+  BranchProvider,
+  MembershipDurationProvider
+} from "./data/providers";
+
+import { FilterCell } from "./ui/filtering";
+import { Command, EditCell } from "./ui/editing";
+import {
+  membershipDurationPredicate,
+  studentPredicate,
+  branchPredicate
+} from "./data/filtering";
+
+//Shared
+import { tokenCache } from "../../hooks/wp-graphql-token";
+import { useLazyFetchQuery } from "../../hooks/util";
+import { useStore } from "../../hooks/store/store";
+
+import {
+  GET_GYM_MEMBERS_QUERY,
+  FULL_NAME,
+  MEMBERSHIP_DURATION,
+  IS_STUDENT,
+  BRANCH,
+  GYM_ADMIN,
+  GYM_ROLE,
+  getUpdateMemberMutation,
+  GYM_TRAINER,
+  getDeleteUserMutation
+} from "../../misc/constants";
 
 const DxGrid = () => {
-  const FULLNAME = "full_name";
-  const GENDER = "gender";
-  const BIRTHDATE = "birthdate";
-  const ISSTUDENT = "is_student";
-  const BRANCH = "branch";
-  const GYMROLE = "gym_role";
-  const REGISTERED = "registeredDate";
-  //Columns
-  const [columns] = useState([
-    { name: FULLNAME, title: "Full Name" },
-    { name: GENDER, title: "Gender" },
-    { name: BIRTHDATE, title: "Birthdate" },
-    { name: ISSTUDENT, title: "Student" },
-    { name: BRANCH, title: "Branch" },
-    { name: GYMROLE, title: "Role" },
-    { name: REGISTERED, title: "Registered" }
-  ]);
+  const [globalState, dispatch] = useStore("users");
 
+  const [columns] = useState([
+    { name: "userId", title: "ID" },
+    { name: FULL_NAME, title: "Full Name" },
+    { name: MEMBERSHIP_DURATION, title: "Membership Expiration" },
+    { name: IS_STUDENT, title: "Student" },
+    { name: BRANCH, title: "Branch" }
+  ]);
   const [rows, setRows] = useState([]);
 
-  //The actual query - used as rows for our table
-  const query = gql`
-    {
-      users(where: { roleIn: GYM_MEMBER }, first: 9999) {
-        nodes {
-          full_name
-          is_student
-          birthdate
-          gender
-          id
-          gym_role
-          branch
-          registeredDate
-        }
-      }
-    }
-  `;
-  const [startQuery, { called, loading, error, data }] = useLazyQuery(query);
+  const [
+    getGymMembers,
+    { called, loading, error, data, networkStatus, refetch }
+  ] = useLazyQuery(GET_GYM_MEMBERS_QUERY, {
+    notifyOnNetworkStatusChange: true
+  });
+
+  const [
+    updateMember,
+    { loading: loadingUpdate, success: successUpdate, error: errorUpdate }
+  ] = useLazyFetchQuery(BASE_URL, tokenCache.token);
+
+  const [
+    deleteUser,
+    { loading: loadingDelete, success: successDelete, error: errorDelete }
+  ] = useLazyFetchQuery(BASE_URL, tokenCache.token);
 
   //State management plugins  https://devexpress.github.io/devextreme-reactive/react/grid/docs/guides/plugin-overview/
   //Handle state changes in our table, provided by dx-react-grid
-  const [sorting, getSorting] = useState([]);
-  const [selection, setSelection] = useState([]);
+  const [editingRowIds, getEditingRowIds] = useState([]); //IDs of the rows being edited.
+  const [rowChanges, setRowChanges] = useState({}); //Not committed row changes.
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [pageSizes] = useState([10, 20, 50, 100]);
+  const [editingStateColumnExtensions] = useState([
+    { columnName: "userId", editingEnabled: false },
+    { columnName: IS_STUDENT, editingEnabled: false },
+    { columnName: BRANCH, editingEnabled: false }
+  ]);
 
   //For data formatting
-  const [studentColumns] = useState([ISSTUDENT]);
-  const [roleColumns] = useState([GYMROLE]);
-  const [genderColumns] = useState([GENDER]);
-  const [birthdateColumns] = useState([BIRTHDATE]);
-  const [branchColumns] = useState([BRANCH]);
-  const [registrationColumns] = useState([REGISTERED]);
+  const [studentCols] = useState([IS_STUDENT]);
+  const [branchCols] = useState([BRANCH]);
+  const [membershipDurationCols] = useState([MEMBERSHIP_DURATION]);
+  const [integratedFilteringColumnExtensions] = useState([
+    {
+      columnName: MEMBERSHIP_DURATION,
+      predicate: membershipDurationPredicate
+    },
+    {
+      columnName: IS_STUDENT,
+      predicate: studentPredicate
+    },
+    {
+      columnName: BRANCH,
+      predicate: branchPredicate
+    }
+  ]);
 
   //Table UI
   const [tableColumnExtensions] = useState([
-    { columnName: ISSTUDENT, width: "auto" },
-    { columnName: GENDER, width: "auto" },
-    { columnName: FULLNAME, wordWrapEnabled: true }
+    { columnName: IS_STUDENT, width: 100 },
+    { columnName: FULL_NAME, wordWrapEnabled: true }
   ]);
 
-  //We wait for the token to be set before querying. Remember to only call once by checking if previously called
+  //ComponentDidMount: We wait for the token to be set before querying.
   useEffect(() => {
     if (tokenCache.token && !called) {
-      startQuery();
+      console.log("Starting query");
+      getGymMembers();
     }
   }, []);
 
   useEffect(() => {
-    if (data) {
-      console.log("Apollo: Done!", [data]);
-      setRows(data.users.nodes);
-    }
     if (loading) {
       console.log("Apollo: Fetching");
     }
-  }, [data, loading]);
+
+    if (networkStatus === 4) {
+      console.log("refetching");
+      //we only refetch because there was a new user, now that we are refetching it, we set it to false
+      dispatch("REFETCHED_NEW_USER");
+    }
+
+    if (data) {
+      //we have a cache-first policy. however, if a new user has been registered, we'd like to refetch the query bypassing the cache
+      if (globalState.registeredNewUser) {
+        refetch();
+      } else {
+        console.log("Apollo: Done!", [data]);
+        setRows(data.users.nodes);
+      }
+    }
+  }, [data, loading, networkStatus]);
+
+  // We can edit , add, delete all we want but changes will only be saved if we commit them.
+  const commitChangesHandler = async ({ changed, deleted }) => {
+    try {
+      let changedRows;
+      if (changed) {
+        //get index of the changed row
+        const index = Object.keys(changed)[0];
+        //get the userId needed for our updating user meta
+        const userId = rows[index].userId;
+        await updateMember(getUpdateMemberMutation(userId, changed[index]));
+        console.log("[commitChangesHandler]: Edited!");
+        changedRows = [...rows];
+        changedRows[index] = { ...changedRows[index], ...changed[index] };
+        setRows(changedRows);
+      } // end if changed
+
+      if (deleted) {
+        const index = deleted[0];
+        await deleteUser(getDeleteUserMutation(index));
+        console.log("[commitChangesHandler]: Deleted!");
+        changedRows = [...rows];
+        changedRows.splice(index, 1);
+        setRows(changedRows);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <Layout loading={loading || !called} error={error}>
-      <div className={`DxGrid ${loading ? "-loading" : ""}`}>
+      <div className="DxGrid">
         {called && data ? (
           <Paper>
             <Grid rows={rows} columns={columns}>
-              <SortingState sorting={sorting} onSortingChange={getSorting} />
+              <SortingState
+                defaultSorting={[
+                  { columnName: MEMBERSHIP_DURATION, direction: "desc" }
+                ]}
+              />
               <PagingState
                 onCurrentPageChange={setCurrentPage}
                 pageSize={pageSize}
               />
-              <SelectionState
-                selection={selection}
-                onSelectionChange={setSelection}
+              <EditingState
+                editingRowIds={editingRowIds}
+                onEditingRowIdsChange={getEditingRowIds}
+                rowChanges={rowChanges}
+                onRowChangesChange={setRowChanges}
+                onCommitChanges={commitChangesHandler}
+                columnExtensions={editingStateColumnExtensions}
               />
 
+              <SearchState />
+              <FilteringState />
+
               <IntegratedSorting />
-              <IntegratedSelection />
+              <IntegratedFiltering
+                columnExtensions={integratedFilteringColumnExtensions}
+              />
               <IntegratedPaging />
 
-              <StudentTypeProvider for={studentColumns} />
-              <GymRoleProvider for={roleColumns} />
-              <GenderProvider for={genderColumns} />
-              <BirthdateProvider for={birthdateColumns} />
-              <BranchProvider for={branchColumns} />
-              <RegistrationProvider for={registrationColumns} />
+              <StudentTypeProvider for={studentCols} />
+              <BranchProvider for={branchCols} />
+              <MembershipDurationProvider for={membershipDurationCols} />
 
-              <Table columnExtensions={tableColumnExtensions} />
+              <Table
+                columnExtensions={tableColumnExtensions}
+                containerComponent={
+                  loadingUpdate.isLoading || loadingDelete.isLoading
+                    ? Spinner3
+                    : Table.Container
+                }
+              />
               <TableHeaderRow showSortingControls />
-              <TableSelection showSelectAll />
+              <Toolbar />
+              <TableEditRow cellComponent={EditCell} />
+              <TableEditColumn
+                showEditCommand={
+                  localStorage.getItem(GYM_ROLE) === GYM_ADMIN ||
+                  localStorage.getItem(GYM_ROLE) === "administrator"
+                }
+                showDeleteCommand={
+                  localStorage.getItem(GYM_ROLE) === GYM_ADMIN ||
+                  localStorage.getItem(GYM_ROLE) === "administrator"
+                }
+                commandComponent={Command}
+              />
               <PagingPanel pageSizes={pageSizes} />
+              <SearchPanel />
+              <TableFilterRow cellComponent={FilterCell} />
             </Grid>
           </Paper>
         ) : (
