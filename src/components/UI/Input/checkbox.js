@@ -31,13 +31,16 @@ const Checkbox = props => {
     <ul className="Checkbox">
       {props.elementConfig.options.map(option => {
         return (
-          <li inputKey={option} className="Checkbox__li">
+          <li key={option} className="Checkbox__li">
             <input
               id={option}
               className="Checkbox__input"
               type="checkbox"
               value={option}
-              checked={props.state[props.inputKey].includes(option)}
+              checked={
+                props.state[props.inputKey].includes(option) ||
+                option === props.initialValue
+              }
               onChange={event =>
                 checkboxHandler(props.inputKey, event, props.handler)
               }
@@ -53,7 +56,7 @@ const Checkbox = props => {
 };
 
 Checkbox.propTypes = {
-  initialValue: PropTypes.arrayOf(PropTypes.string).isRequired,
+  initialValue: PropTypes.string,
   inputKey: PropTypes.string.isRequired,
   focusHandler: PropTypes.func,
   elementConfig: PropTypes.shape({
