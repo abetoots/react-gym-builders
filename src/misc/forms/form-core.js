@@ -9,7 +9,7 @@ export const initForm = inputs => {
   const useFormState = () => {
     const [state, setState] = useState(initialState);
 
-    const updater = (stateKey, value, toReset) => {
+    const updater = (stateKey, value, toReset = null) => {
       if (toReset) {
         if (Array.isArray(toReset)) {
           let valuesToReset = {};
