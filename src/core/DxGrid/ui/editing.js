@@ -12,8 +12,13 @@ import SaveIcon from "@material-ui/icons/Save";
 import CancelIcon from "@material-ui/icons/Cancel";
 
 import ReactDatePicker from "react-date-picker";
-import { formatDateToYYYYMMDD } from "../../../misc/util";
-import { MEMBERSHIP_DURATION } from "../../../misc/constants";
+import {
+  MEMBERSHIP_DURATION,
+  THIRTY_DAYS,
+  NINETY_DAYS,
+  HALF_YEAR,
+  ONE_YEAR
+} from "../../../misc/constants";
 
 const AddButton = ({ onExecute }) => (
   <div style={{ textAlign: "center" }}>
@@ -118,15 +123,13 @@ const MDEditCellBase = ({ onValueChange, classes, row }) => {
   const [rdpVal, setRDPVal] = useState(valueDateObj);
 
   const handleRDPChange = dateObj => {
-    const newVal = formatDateToYYYYMMDD(dateObj);
-    onValueChange(newVal);
+    onValueChange(dateObj.toDateString());
     setSelectVal("");
     setRDPVal(dateObj);
   };
 
   const handleSelectChange = event => {
-    let newExpDate = new Date(valueDateObj.getTime() + +event.target.value);
-    onValueChange(formatDateToYYYYMMDD(newExpDate));
+    onValueChange(event.target.value);
     setSelectVal(event.target.value);
     setRDPVal(valueDateObj);
   };
@@ -141,10 +144,10 @@ const MDEditCellBase = ({ onValueChange, classes, row }) => {
         <MenuItem value="" selected>
           <em>None</em>
         </MenuItem>
-        <MenuItem value="2592000000">Add 30 days</MenuItem>
-        <MenuItem value="7776000000">Add 90 days</MenuItem>
-        <MenuItem value="15552000000">Add 180 days</MenuItem>
-        <MenuItem value="31536000000">Add 1 year</MenuItem>
+        <MenuItem value={THIRTY_DAYS}>Add 30 days</MenuItem>
+        <MenuItem value={NINETY_DAYS}>Add 90 days</MenuItem>
+        <MenuItem value={HALF_YEAR}>Add 180 days</MenuItem>
+        <MenuItem value={ONE_YEAR}>Add 1 year</MenuItem>
       </Select>
       <div className={classes.or}>or</div>
       <ReactDatePicker
