@@ -169,27 +169,57 @@ const DxGrid = () => {
     try {
       let changedRows;
       if (changed) {
-        //get index of the changed row
-        const index = Object.keys(changed)[0];
-        //get the userId needed for our updating user meta
-        const userId = rows[index].userId;
-        await updateMember(getUpdateMemberMutation(userId, changed[index]));
+        //get the row index of the changed row
+        const rowIndex = Object.keys(changed)[0];
+        //fire a query to update the member
+        //the query function expects a query string which we get with getter getUpdateMemberMutation()
+        //the getter expects the userId and an object with the changes
+        const resData = await updateMember(
+          getUpdateMemberMutation(rows[rowIndex].userId, changed[rowIndex])
+        );
+        //graphql always resolves with status 200, so we add extra step to check if it returned errors
+        if (resData.errors) {
+          throw resData.errors;
+        }
+        //Success, finally!
         console.log("[commitChangesHandler]: Edited!");
+
+        //copy the old rows
         changedRows = [...rows];
-        changedRows[index] = { ...changedRows[index], ...changed[index] };
+        const changesFromServer = {};
+        const keys = Object.keys(changed[rowIndex]);
+        //for each key in our proposed changes object (changed[rowIndex]),
+        keys.forEach(key => {
+          //we only update changes that the server responded with a value that is not null
+          if (resData.data.updateGymUser[key]) {
+            changesFromServer[key] = resData.data.updateGymUser[key];
+          }
+          //we do this because in our proposed changes object we may have 'membersip_duration: "30 days"' (this happens when editing)
+          //but the server returns a date string
+          //we dont want to merge our proposed changes object but the actual data received from the server
+        });
+        //we replace the row we are trying to change with the updated data
+        changedRows[rowIndex] = {
+          ...changedRows[rowIndex],
+          ...changesFromServer
+        };
         setRows(changedRows);
-      } // end if changed
+      }
 
       if (deleted) {
-        const index = deleted[0];
-        await deleteUser(getDeleteUserMutation(index));
+        const rowIndex = deleted[0];
+        const uniqueId = rows[rowIndex].id; //get the unique id not the userId
+        const resData = await deleteUser(getDeleteUserMutation(uniqueId));
+        if (resData.errors) {
+          throw resData.errors;
+        }
         console.log("[commitChangesHandler]: Deleted!");
         changedRows = [...rows];
-        changedRows.splice(index, 1);
+        changedRows.splice(rowIndex, 1);
         setRows(changedRows);
       }
     } catch (err) {
-      console.log(err);
+      console.log("[commitChangesHandler]: Error! ", [err]);
     }
   };
 
