@@ -16,7 +16,7 @@ const configureStore = listenerKey => {
   const actions = {
     REGISTER_START: () => ({ registering: true }),
     REGISTER_SUCCESS: () => ({
-      ...initialState,
+      ...initialState, //!careful that you only reset if you don't rely on other values
       registering: false,
       registered: true,
       registeredNewUser: true
