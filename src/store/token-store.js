@@ -1,6 +1,6 @@
 import { initStore } from "./store";
-import { tokenCache } from "../auth";
-import { cleanupLocalStorage } from "../../misc/util";
+import { tokenCache } from "../hooks/auth";
+import { cleanupLocalStorage } from "../misc/util";
 
 /**
  * Think of this as a reducer similar to redux
@@ -26,16 +26,21 @@ const initialState = {
 const configureStore = listenerKey => {
   const actions = {
     LOGIN_START: state => ({ loadingLogin: true, calledLogin: true }),
-    LOGIN_SUCCESS: (state, data) => ({
-      ...initialState,
-      loadingLogin: false,
-      dataLogin: data,
-      loggedIn: true
-    }),
+    LOGIN_SUCCESS: (state, data) => {
+      console.log("[Dispatch Success]: LOGIN_SUCCESS", [data]);
+      return {
+        ...initialState, //!careful that you only reset if you don't rely on other values
+        calledLogin: true,
+        loadingLogin: false,
+        dataLogin: data,
+        loggedIn: true
+      };
+    },
     LOGIN_FAIL: (state, errorDispatch) => {
       console.log("[Dispatch Error]: LOGIN_FAIL ", [errorDispatch.errorDev]);
       return {
         ...initialState,
+        calledLogin: true,
         loadingLogin: false,
         errorLogin: { ...state.errorLogin, ...errorDispatch }
       };
