@@ -1,4 +1,5 @@
 import { initForm } from "./form-core";
+import { THIRTY_DAYS, NINETY_DAYS, HALF_YEAR, ONE_YEAR } from "../constants";
 
 const inputs = [
   {
@@ -28,25 +29,29 @@ const inputs = [
     elementConfig: {
       options: [
         {
-          value: "THIRTY_DAYS",
+          value: "",
+          label: "None"
+        },
+        {
+          value: THIRTY_DAYS,
           label: "30 days"
         },
         {
-          value: "NINETY_DAYS",
+          value: NINETY_DAYS,
           label: "90 days"
         },
         {
-          value: "HALF_YEAR",
+          value: HALF_YEAR,
           label: "180 days"
         },
         {
-          value: "ONE_YEAR",
+          value: ONE_YEAR,
           label: "1 Year"
         }
       ],
       required: true
     },
-    initialValue: "30 days",
+    initialValue: "",
     description: "Select how long from today until the membership expires ",
     hasToRemove: "membership_duration_specific"
   },
