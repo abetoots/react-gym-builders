@@ -24,15 +24,19 @@ export const useLazyLoginMutation = dispatch => {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          query: query
-        }).then(res => {
-          if (res.ok) {
-            return res.json();
-          } else {
-            throw res.json();
-          }
+          query: theQuery
         })
+      }).then(res => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          throw res.json();
+        }
       });
+
+      if (resData.errors) {
+        throw resData.errors;
+      }
 
       console.log("[useLazyLoginMutation]: Done!", resData);
       setupLocalStorage(resData.data);
@@ -85,6 +89,10 @@ export const useRefreshToken = () => {
           throw res.json();
         }
       });
+
+      if (resData.errors) {
+        throw resData.errors;
+      }
 
       //We got a valid token, user can now have access to UI
       //No more UI loading hint, only silent refreshes from here on out
