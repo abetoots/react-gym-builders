@@ -26,9 +26,11 @@ module.exports = merge(common, {
       }
     }),
     new webpack.DefinePlugin({
-      BASE_URL: JSON.stringify("https://flerson.com/builders-test/"),
+      BASE_URL: JSON.stringify(
+        "https://abecaymo-headlesswp.000webhostapp.com/"
+      ),
       BASE_API_URL: JSON.stringify(
-        "https://flerson.com/builders-test/wp-json/wp/v2/"
+        "https://abecaymo-headlesswp.000webhostapp.com/wp-json/wp/v2/"
       )
     }),
     new MiniCssExtractPlugin({ filename: "[name].[contentHash].css" }),
@@ -52,8 +54,8 @@ module.exports = merge(common, {
             loader: "sass-resources-loader",
             options: {
               resources: [
-                "./frontend/styles/util/_variables.scss",
-                "./frontend/styles/tools/*.scss"
+                "./styles/tools/*.scss",
+                "./styles/util/_variables.scss"
               ]
             }
           }
