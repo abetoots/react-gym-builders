@@ -15,26 +15,37 @@ const Register = props => {
   const [formState, setFormState] = useFormState();
   const [globalState, dispatch] = useStore("users");
 
-  const [
-    createMember,
-    { loading: loadingCreate, success: successCreate, error: errorCreate }
-  ] = useLazyFetchQuery(BASE_URL, tokenCache.token);
+  const [createMember] = useLazyFetchQuery(BASE_URL, tokenCache.token);
 
   const submitHandler = async e => {
     e.preventDefault();
 
     dispatch("REGISTER_START");
     try {
-      const resData = await createMember(
-        getCreateMemberMutation(formState, GYM_MEMBER)
-      );
+      const {
+        membership_duration_specific,
+        membership_duration_preset
+      } = formState;
+      //at least one must be set when registering a user
+      if (!membership_duration_specific && !membership_duration_preset) {
+        throw "You must set the membership duration of the user";
+      }
+      //fire a query to create a member. the query function expects a string
+      //we get the mutation string through getter getCreateMemberMutation()
+      //the getter expects an object with the member details
+      const resData = await createMember(getCreateMemberMutation(formState));
+      //graphql always resolves with status 200, so we add extra step to check if it returned errors
       if (resData.errors) {
         throw resData.errors;
       }
+      //trigger ui updates
       dispatch("REGISTER_SUCCESS");
     } catch (err) {
       dispatch("REGISTER_FAIL", {
-        output: "Registration failed! Something went wrong with our servers",
+        output:
+          typeof err === "string" // useful when we throw error strings like the one above
+            ? err
+            : "Registration failed! Something went wrong with our servers",
         errorDev: err
       });
     }
@@ -55,14 +66,14 @@ const Register = props => {
           handleSubmit={submitHandler}
           loading={globalState.registering}
           error={globalState.errorRegister.output}
-          success={globalState.registered}
+          success={globalState.registeredNewUser}
         >
           {inputs.map(input => {
             return (
               <Input
                 state={formState}
                 handler={(inputKey, inputValue) =>
-                  setFormState(inputKey, inputValue, input.hasToRemove || null)
+                  setFormState(inputKey, inputValue, input.hasToRemove)
                 }
                 key={input.key}
                 inputKey={input.key}
