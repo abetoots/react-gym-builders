@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import "./header.scss";
+import "./Header.scss";
 
 import { getLinkList } from "../../misc/link-list";
 
