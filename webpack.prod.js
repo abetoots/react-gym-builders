@@ -7,6 +7,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ManifestPlugin = require("webpack-manifest-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
+const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = merge(common, {
   mode: "production",
@@ -25,6 +26,9 @@ module.exports = merge(common, {
         removeAttributeQuotes: true
       }
     }),
+    new CopyPlugin([
+      { from: "./public/_redirects", to: "./public/_redirects" }
+    ]),
     new webpack.DefinePlugin({
       BASE_URL: JSON.stringify(
         "https://abecaymo-headlesswp.000webhostapp.com/"
