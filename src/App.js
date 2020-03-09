@@ -9,13 +9,13 @@ import BoundaryUI from "./hoc/BoundaryUI/BoundaryUI";
 import BoundaryRedirect from "./hoc/BoundaryRedirect/BoundaryRedirect";
 
 //Shared, globals, utils
-import tokenStore from "./store/token-store";
-import userStore from "./store/users-store";
-import { useStore, combineStore } from "./store/store";
-import { list } from "./misc/link-list";
-import { uniqueRoutes } from "./misc/util";
-import { useRefreshToken } from "./hooks/auth";
-import { REFRESH_TOKEN } from "./misc/constants";
+import tokenStore from "./misc/store/token";
+import userStore from "./misc/store/users";
+import { useStore, combineStore } from "./misc/store/store-core";
+import { list } from "./misc/shared/link-list";
+import { uniqueRoutes } from "./misc/shared/helper-funcs";
+import { useRefreshToken } from "./misc/hooks/auth";
+import { REFRESH_TOKEN } from "./misc/shared/constants";
 
 combineStore({
   token: tokenStore,
@@ -56,7 +56,7 @@ const App = () => {
         <BoundaryRedirect if={called && successRefresh} ifTrueTo="/dashboard" />
         <BoundaryRedirect if={called && errorRefresh} ifTrueTo="/login" />
         <BoundaryRedirect
-          if={!globalState.calledLogin && !globalState.loggedIn}
+          if={!globalState.calledAuth && !globalState.authenticated}
           ifTrueTo="/login"
         />
       </BoundaryUI>
