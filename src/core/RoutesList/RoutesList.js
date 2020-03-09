@@ -1,13 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { Route, Switch, Redirect } from "react-router-dom";
-//Components
-import asyncComponent from "../../hoc/asyncComponent/asyncComponent";
+import { Route, Switch } from "react-router-dom";
+import loadable from "@loadable/component";
 
-const AsyncNotFound = asyncComponent(() => {
-  return import("../../components/NotFound404/NotFound404");
-});
+const AsyncNotFound = loadable(() =>
+  import("../../components/NotFound404/NotFound404")
+);
 
 const RoutesList = props => {
   return (
