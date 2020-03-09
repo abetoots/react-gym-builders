@@ -21,6 +21,3 @@ yarn-error.log*
 
 #VScode
 .vscode/
-
-#dev scripts only
-dev-scripts.php
