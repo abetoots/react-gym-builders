@@ -1,13 +1,8 @@
 .Header {
     background-color: white;
     box-shadow: 0 1px 3px 1px #ccc;
-
-    &__slot {
-        &.-horizontal {
-            display: flex;
-            align-items: center;
-        }
-    }
+    display: flex;
+    align-items: center;
 }
 
 .HeaderWrap {

@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import "./Header.scss";
 
-import { getLinkList } from "../../misc/link-list";
+import { getLinkList } from "../../misc/shared/link-list";
 
 import Logo from "../UI/Logo/Logo";
 import BurgerMenu from "../UI/BurgerMenu/BurgerMenu";
@@ -35,16 +35,14 @@ const Header = props => {
   return (
     <section className="HeaderWrap">
       <header className="Header">
-        <div className="Header__slot -horizontal">
-          <Logo src={logo} alt={"Builders Logo"} />
-          <BurgerMenu handleClick={menuClickHandler} toggled={menuToggled} />
-        </div>
+        <Logo src={logo} alt="Builders Logo" />
+        <BurgerMenu handleClick={menuClickHandler} toggled={menuToggled} />
       </header>
       <div ref={targetElToDisplay} className="HeaderWrap__slot -menu">
         <div ref={target}>
           <Menu
             linklist={getLinkList()}
-            toggled={menuToggled}
+            visible={menuToggled}
             touchTargetStyles={{
               borderBottom: "1px solid #ccc"
             }}
