@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
+import React, { useEffect } from "react";
 import BoundaryRedirect from "../../hoc/BoundaryRedirect/BoundaryRedirect";
 import { useStore } from "../../misc/store/store-core";
 
 const Logout = props => {
-  const [state, dispatch] = useStore();
+  const [globalState, dispatch] = useStore();
   useEffect(() => {
     dispatch("LOGOUT");
   }, []);
-  return <BoundaryRedirect if={!state.authenticated} ifTrueTo="/login" />;
+  return <BoundaryRedirect if={!globalState.authenticated} ifTrueTo="/login" />;
 };
 
 export default Logout;
