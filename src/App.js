@@ -9,7 +9,7 @@ import BoundaryUI from "./hoc/BoundaryUI/BoundaryUI";
 import BoundaryRedirect from "./hoc/BoundaryRedirect/BoundaryRedirect";
 
 //Shared, globals, utils
-import tokenStore from "./misc/store/token";
+import tokenStore from "./misc/store/authentication";
 import userStore from "./misc/store/users";
 import { useStore, combineStore } from "./misc/store/store-core";
 import { list } from "./misc/shared/link-list";
