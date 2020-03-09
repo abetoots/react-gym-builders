@@ -9,10 +9,7 @@ import { useStore } from "../../misc/store/store-core";
 import inputs, { useFormState } from "../../misc/forms/register";
 import { tokenCache } from "../../misc/hooks/auth";
 import { useLazyFetchQuery } from "../../misc/hooks/util";
-import {
-  getCreateMemberMutation,
-  GYM_MEMBER
-} from "../../misc/shared/constants";
+import { getCreateMemberMutation } from "../../misc/shared/constants";
 
 const Register = props => {
   const [formState, setFormState] = useFormState();
