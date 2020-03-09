@@ -31,10 +31,10 @@ module.exports = merge(common, {
     ]),
     new webpack.DefinePlugin({
       BASE_URL: JSON.stringify(
-        "https://abecaymo-headlesswp.000webhostapp.com/"
+        "https://builders-api.flerson.com/"
       ),
       BASE_API_URL: JSON.stringify(
-        "https://abecaymo-headlesswp.000webhostapp.com/wp-json/wp/v2/"
+        "https://builders-api.flerson.com/wp-json/wp/v2/"
       )
     }),
     new MiniCssExtractPlugin({ filename: "[name].[contentHash].css" }),
@@ -58,8 +58,8 @@ module.exports = merge(common, {
             loader: "sass-resources-loader",
             options: {
               resources: [
-                "./styles/tools/*.scss",
-                "./styles/util/_variables.scss"
+                "./src/styles/tools/*.scss",
+                "./src/styles/util/_variables.scss"
               ]
             }
           }
