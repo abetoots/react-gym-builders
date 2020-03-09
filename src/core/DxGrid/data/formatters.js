@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import toStartCase from "lodash.startcase";
 import capitalize from "lodash.capitalize";
-import { isDate } from "../../../misc/util";
+import { isDate } from "../../../misc/shared/helper-funcs";
 
 // Serves as formatter for boolean integers into check or x marks
 export const intToEmoji = ({ value }) => {

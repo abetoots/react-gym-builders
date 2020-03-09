@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.scss";
 
 import "./fontawesome";
-import "./misc/typography";
+import "./typography";
 
 //Start components
 import App from "./App";
@@ -11,7 +11,7 @@ import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "@apollo/react-hooks";
 
 //shared
-import { tokenCache } from "./hooks/auth";
+import { tokenCache } from "./misc/hooks/auth";
 
 export const client = new ApolloClient({
   uri: BASE_URL + "graphql",

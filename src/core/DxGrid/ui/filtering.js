@@ -9,7 +9,7 @@ import {
   MEMBERSHIP_DURATION,
   IS_STUDENT,
   BRANCH
-} from "../../../misc/constants";
+} from "../../../misc/shared/constants";
 
 export const FilterCell = props => {
   const { column } = props;

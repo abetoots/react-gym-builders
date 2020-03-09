@@ -50,9 +50,9 @@ import {
 } from "./data/filtering";
 
 //Shared
-import { tokenCache } from "../../hooks/auth";
-import { useLazyFetchQuery } from "../../hooks/util";
-import { useStore } from "../../store/store";
+import { tokenCache } from "../../misc/hooks/auth";
+import { useLazyFetchQuery } from "../../misc/hooks/util";
+import { useStore } from "../../misc/store/store-core";
 
 import {
   GET_GYM_MEMBERS_QUERY,
@@ -65,7 +65,7 @@ import {
   getUpdateMemberMutation,
   GYM_TRAINER,
   getDeleteUserMutation
-} from "../../misc/constants";
+} from "../../misc/shared/constants";
 
 const DxGrid = () => {
   const [globalState, dispatch] = useStore("users");

@@ -18,7 +18,7 @@ import {
   NINETY_DAYS,
   HALF_YEAR,
   ONE_YEAR
-} from "../../../misc/constants";
+} from "../../../misc/shared/constants";
 
 const AddButton = ({ onExecute }) => (
   <div style={{ textAlign: "center" }}>

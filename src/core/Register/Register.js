@@ -5,11 +5,14 @@ import Layout from "../../components/layout";
 import Form from "../../components/UI/Form/Form";
 import Input from "../../components/UI/Input/Input";
 
-import { useStore } from "../../store/store";
+import { useStore } from "../../misc/store/store-core";
 import inputs, { useFormState } from "../../misc/forms/register";
-import { tokenCache } from "../../hooks/auth";
-import { useLazyFetchQuery } from "../../hooks/util";
-import { getCreateMemberMutation, GYM_MEMBER } from "../../misc/constants";
+import { tokenCache } from "../../misc/hooks/auth";
+import { useLazyFetchQuery } from "../../misc/hooks/util";
+import {
+  getCreateMemberMutation,
+  GYM_MEMBER
+} from "../../misc/shared/constants";
 
 const Register = props => {
   const [formState, setFormState] = useFormState();

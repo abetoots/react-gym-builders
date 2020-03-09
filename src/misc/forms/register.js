@@ -1,5 +1,10 @@
 import { initForm } from "./form-core";
-import { THIRTY_DAYS, NINETY_DAYS, HALF_YEAR, ONE_YEAR } from "../constants";
+import {
+  THIRTY_DAYS,
+  NINETY_DAYS,
+  HALF_YEAR,
+  ONE_YEAR
+} from "../shared/constants";
 
 const inputs = [
   {
