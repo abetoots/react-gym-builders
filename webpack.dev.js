@@ -35,8 +35,8 @@ module.exports = merge(common, {
             loader: "sass-resources-loader",
             options: {
               resources: [
-                "./styles/util/_variables.scss",
-                "./styles/tools/*.scss"
+                "./src/styles/util/_variables.scss",
+                "./src/styles/tools/*.scss"
               ]
             }
           }
