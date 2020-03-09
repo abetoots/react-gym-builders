@@ -4,8 +4,8 @@ import {
   JWT_AUTH_EXPIRATION,
   AUTH_TOKEN,
   getRefreshMutation
-} from "../misc/constants";
-import { setupLocalStorage, cleanupLocalStorage } from "../misc/util";
+} from "../shared/constants";
+import { setupLocalStorage, cleanupLocalStorage } from "../shared/helper-funcs";
 
 //Follow this auth flow : https://hasura.io/blog/best-practices-of-using-jwt-with-graphql/#jwt_persist
 //For WPGraphQl , simplified : https://github.com/NeverNull/gatsby-apollo-wpgraphql-jwt-starter/issues/1

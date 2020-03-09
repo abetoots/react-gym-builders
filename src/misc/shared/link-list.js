@@ -1,13 +1,13 @@
 import { tokenCache } from "../hooks/auth";
 
 import loadable from "@loadable/component";
-import Login from "../core/Login/Login";
-import Logout from "../core/Logout/Logout";
-import Register from "../core/Register/Register";
-import GraphQL from "../core/GraphiQlWrap/GraphiQlWrap";
+import Login from "../../core/Login/Login";
+import Logout from "../../core/Logout/Logout";
+import Register from "../../core/Register/Register";
+import GraphQL from "../../core/GraphiQlWrap/GraphiQlWrap";
 
 //Lazy load all components except the component for root or home
-const AsyncDxGrid = loadable(() => import("../core/DxGrid/DxGrid"));
+const AsyncDxGrid = loadable(() => import("../../core/DxGrid/DxGrid"));
 
 /**
  * How to use:

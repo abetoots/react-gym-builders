@@ -1,4 +1,4 @@
-import { initStore } from "./store";
+import { initStore } from "./store-core";
 
 const initialState = {
   registeredNewUser: false,

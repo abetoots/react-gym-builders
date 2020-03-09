@@ -1,6 +1,6 @@
-import { initStore } from "./store";
+import { initStore } from "./store-core";
 import { tokenCache } from "../hooks/auth";
-import { cleanupLocalStorage } from "../misc/util";
+import { cleanupLocalStorage } from "../shared/helper-funcs";
 
 /**
  * Think of this as a reducer similar to redux
@@ -11,44 +11,44 @@ import { cleanupLocalStorage } from "../misc/util";
  */
 
 const initialState = {
-  loadingLogin: false,
-  calledLogin: false,
-  loggedIn: false,
-  errorLogin: {
+  calledAuth: false,
+  pendingAuth: false,
+  authenticated: false,
+  errorAuth: {
     //errors meant for the developer
     errorDev: null,
     //errors meant for the user UI
     output: ""
   },
-  dataLogin: []
+  dataAuth: []
 };
 
 const configureStore = listenerKey => {
   const actions = {
-    LOGIN_START: state => ({ loadingLogin: true, calledLogin: true }),
+    LOGIN_START: state => ({ pendingAuth: true, calledAuth: true }),
     LOGIN_SUCCESS: (state, data) => {
       console.log("[Dispatch Success]: LOGIN_SUCCESS", [data]);
       return {
         ...initialState, //!careful that you only reset if you don't rely on other values
-        calledLogin: true,
-        loadingLogin: false,
-        dataLogin: data,
-        loggedIn: true
+        calledAuth: true,
+        pendingAuth: false,
+        dataAuth: data,
+        authenticated: true
       };
     },
     LOGIN_FAIL: (state, errorDispatch) => {
       console.log("[Dispatch Error]: LOGIN_FAIL ", [errorDispatch.errorDev]);
       return {
         ...initialState,
-        calledLogin: true,
-        loadingLogin: false,
-        errorLogin: { ...state.errorLogin, ...errorDispatch }
+        calledAuth: true,
+        pendingAuth: false,
+        errorAuth: { ...state.errorAuth, ...errorDispatch }
       };
     },
     LOGOUT: state => {
       tokenCache.token = null;
       cleanupLocalStorage();
-      return { loggedIn: false, dataLogin: [], calledLogin: false };
+      return { authenticated: false, dataAuth: [], calledAuth: false };
     }
   };
 

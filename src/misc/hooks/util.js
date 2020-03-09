@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { isFunction } from "../misc/util";
 
 export const useLazyFetchQuery = (url, token) => {
   if (!token) {

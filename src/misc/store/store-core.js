@@ -1,4 +1,4 @@
-import { useState, ueEffect, useEffect } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 /**
  * Guiding principle: Similar to redux, we want to share logic and data
