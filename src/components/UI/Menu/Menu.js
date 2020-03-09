@@ -1,11 +1,10 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
-
 import PropTypes from "prop-types";
+import { NavLink } from "react-router-dom";
 import "./Menu.scss";
 
 const Menu = props => {
-  const classes = props.toggled ? ["Menu"] : ["Menu -hidden"];
+  const classes = props.visible ? ["Menu"] : ["Menu -hidden"];
 
   if (props.desktopOnly) {
     classes.push("-desktopOnly");
@@ -16,7 +15,7 @@ const Menu = props => {
       {props.label ? <h4 className="Menu__label">{props.label}</h4> : ""}
       <ul
         className={`Menu__ul ${props.horizontal ? " -horizontal" : ""}`}
-        aria-expanded={props.toggled}
+        aria-expanded={props.visible}
       >
         {props.linklist.map(item => (
           <li className="Menu__li" key={item.path}>
