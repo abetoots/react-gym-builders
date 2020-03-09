@@ -7,11 +7,11 @@ import Input from "../../components/UI/Input/Input";
 import BoundaryRedirect from "../../hoc/BoundaryRedirect/BoundaryRedirect";
 
 //Fetch
-import { useLazyLoginMutation } from "../../hooks/auth";
+import { useLazyLoginMutation } from "../../misc/hooks/auth";
 
 import inputs, { useFormState } from "../../misc/forms/login";
-import { useStore } from "../../store/store";
-import { getLoginMutation } from "../../misc/constants";
+import { useStore } from "../../misc/store/store-core";
+import { getLoginMutation } from "../../misc/shared/constants";
 
 const Login = props => {
   const [formState, setFormState] = useFormState();
@@ -39,13 +39,13 @@ const Login = props => {
       }}
     >
       <BoundaryRedirect
-        if={globalState.calledLogin && globalState.loggedIn}
+        if={globalState.calledAuth && globalState.authenticated}
         ifTrueTo="/dashboard"
       />
       <Form
         handleSubmit={submitHandler}
-        loading={globalState.loadingLogin}
-        error={error || globalState.errorLogin.output}
+        loading={globalState.pendingAuth}
+        error={error || globalState.errorAuth.output}
       >
         {inputs.map(input => {
           return (
