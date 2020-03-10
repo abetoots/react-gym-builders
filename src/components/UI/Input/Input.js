@@ -100,6 +100,7 @@ const Input = props => {
         inputElement = (
           <Toggle
             state={props.state}
+            initialValue={props.initialValue}
             handler={props.handler}
             inputKey={props.inputKey}
             focusHandler={focusHandler}
