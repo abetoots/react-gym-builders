@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-export const useLazyFetchQuery = (url, token) => {
+export const useLazyFetchQuery = (graphqlUrl, token) => {
   if (!token) {
     return;
   }
@@ -24,7 +24,7 @@ export const useLazyFetchQuery = (url, token) => {
     console.log("[useLazyFetchQuery]: fetching...");
     setLoading({ isLoading: true, called: true });
     try {
-      const resData = await fetch(url + "graphql", {
+      const resData = await fetch(graphqlUrl, {
         method: "POST",
         headers: headers,
         body: JSON.stringify({

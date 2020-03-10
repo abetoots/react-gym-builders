@@ -25,9 +25,9 @@ const initialState = {
 
 const configureStore = listenerKey => {
   const actions = {
-    LOGIN_START: state => ({ pendingAuth: true, calledAuth: true }),
-    LOGIN_SUCCESS: (state, data) => {
-      console.log("[Dispatch Success]: LOGIN_SUCCESS", [data]);
+    AUTH_START: state => ({ pendingAuth: true, calledAuth: true }),
+    AUTH_SUCCESS: (state, data) => {
+      console.log("[Dispatch Success]: AUTH_SUCCESS", [data]);
       return {
         ...initialState, //!careful that you only reset if you don't rely on other values
         calledAuth: true,
@@ -36,8 +36,8 @@ const configureStore = listenerKey => {
         authenticated: true
       };
     },
-    LOGIN_FAIL: (state, errorDispatch) => {
-      console.log("[Dispatch Error]: LOGIN_FAIL ", [errorDispatch.errorDev]);
+    AUTH_FAIL: (state, errorDispatch) => {
+      console.log("[Dispatch Error]: AUTH_FAIL ", [errorDispatch.errorDev]);
       return {
         ...initialState,
         calledAuth: true,

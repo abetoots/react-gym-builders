@@ -82,21 +82,20 @@ const DxGrid = () => {
     notifyOnNetworkStatusChange: true
   });
 
-  const [
-    updateMember,
-    { loading: loadingUpdate, success: successUpdate, error: errorUpdate }
-  ] = useLazyFetchQuery(BASE_URL, tokenCache.token);
+  const [updateMember, { loading: loadingUpdate }] = useLazyFetchQuery(
+    GRAPHQL_URL,
+    tokenCache.token
+  );
 
-  const [
-    deleteUser,
-    { loading: loadingDelete, success: successDelete, error: errorDelete }
-  ] = useLazyFetchQuery(BASE_URL, tokenCache.token);
+  const [deleteUser, { loading: loadingDelete }] = useLazyFetchQuery(
+    GRAPHQL_URL,
+    tokenCache.token
+  );
 
   //State management plugins  https://devexpress.github.io/devextreme-reactive/react/grid/docs/guides/plugin-overview/
   //Handle state changes in our table, provided by dx-react-grid
   const [editingRowIds, getEditingRowIds] = useState([]); //IDs of the rows being edited.
   const [rowChanges, setRowChanges] = useState({}); //Not committed row changes.
-  const [currentPage, setCurrentPage] = useState(0);
   const [pageSizes] = useState([10, 20, 50, 100]);
   const [editingStateColumnExtensions] = useState([
     { columnName: "userId", editingEnabled: false },

@@ -16,9 +16,9 @@ export const tokenCache = {};
 export const useLazyLoginMutation = dispatch => {
   const startLogin = async theQuery => {
     console.log("[useLazyLoginMutation]: fetching...");
-    dispatch("LOGIN_START");
+    dispatch("AUTH_START");
     try {
-      const resData = await fetch(BASE_URL + "graphql", {
+      const resData = await fetch(GRAPHQL_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -42,10 +42,10 @@ export const useLazyLoginMutation = dispatch => {
       setupLocalStorage(resData.data);
       tokenCache.token = resData.data.login[AUTH_TOKEN];
       silentlyRefresh();
-      dispatch("LOGIN_SUCCESS", resData.data);
+      dispatch("AUTH_SUCCESS", resData.data);
     } catch (err) {
       console.log("[useLazyLoginMutation]: Error!", [err]);
-      dispatch("LOGIN_FAIL", {
+      dispatch("AUTH_FAIL", {
         errorDev: err,
         output: "Login failed! Something went wrong with our servers"
       });
@@ -74,7 +74,7 @@ export const useRefreshToken = () => {
   const refreshWithHints = async () => {
     console.log("Actively refreshing ...");
     try {
-      const resData = await fetch(BASE_URL + "graphql", {
+      const resData = await fetch(GRAPHQL_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -138,7 +138,7 @@ const setNewExpirationDate = () => {
 const backgroundRefresh = async () => {
   console.log("Refreshing in the background ...");
   try {
-    const resData = await fetch(BASE_URL + "graphql", {
+    const resData = await fetch(GRAPHQL_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

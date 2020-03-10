@@ -37,7 +37,7 @@ const App = () => {
   useEffect(() => {
     //if we found a refresh token
     if (successRefresh) {
-      dispatch("LOGIN_SUCCESS", data);
+      dispatch("AUTH_SUCCESS", data);
     }
   }, [successRefresh]);
   //ComponentDidMount

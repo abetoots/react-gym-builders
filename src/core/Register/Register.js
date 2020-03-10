@@ -15,7 +15,7 @@ const Register = props => {
   const [formState, setFormState] = useFormState();
   const [globalState, dispatch] = useStore("users");
 
-  const [createMember] = useLazyFetchQuery(BASE_URL, tokenCache.token);
+  const [createMember] = useLazyFetchQuery(GRAPHQL_URL, tokenCache.token);
 
   const submitHandler = async e => {
     e.preventDefault();

@@ -14,7 +14,7 @@ import { ApolloProvider } from "@apollo/react-hooks";
 import { tokenCache } from "./misc/hooks/auth";
 
 export const client = new ApolloClient({
-  uri: BASE_URL + "graphql",
+  uri: GRAPHQL_URL,
   request: operation => {
     if (tokenCache.token) {
       operation.setContext({
