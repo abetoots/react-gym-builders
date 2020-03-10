@@ -31,7 +31,8 @@ module.exports = merge(common, {
       BASE_URL: JSON.stringify("https://builders-api.flerson.com/"),
       BASE_API_URL: JSON.stringify(
         "https://builders-api.flerson.com/wp-json/wp/v2/"
-      )
+      ),
+      GRAPHQL_URL: JSON.stringify("https://builders-api.flerson.com/graphql")
     }),
     new MiniCssExtractPlugin({ filename: "[name].[contentHash].css" }),
     new webpack.HashedModuleIdsPlugin(), // so that file hashes don't change unexpectedly
