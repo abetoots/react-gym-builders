@@ -12,7 +12,7 @@ const Toggle = props => {
   const toggleHandler = (inputKey, event, handler) => {
     //if toggle is about to be checked
     if (event.target.checked) {
-      handler(inputKey, event.target.value);
+      handler(inputKey, true);
     } else {
       handler(inputKey, false);
     }
@@ -23,8 +23,7 @@ const Toggle = props => {
       <input
         className="Toggle__input"
         type="checkbox"
-        value={1}
-        checked={props.state[props.inputKey]}
+        checked={props.state[props.inputKey] || props.initialValue}
         onChange={event => toggleHandler(props.inputKey, event, props.handler)}
         onFocus={props.focusHandler}
         onBlur={props.focusHandler}
@@ -34,6 +33,7 @@ const Toggle = props => {
 };
 
 Toggle.propTypes = {
+  initialValue: PropTypes.bool,
   inputKey: PropTypes.string.isRequired,
   focusHandler: PropTypes.func
 };
