@@ -14,8 +14,6 @@ import {
   Table,
   TableHeaderRow,
   PagingPanel,
-  Toolbar,
-  SearchPanel,
   TableFilterRow,
   TableEditRow,
   TableEditColumn
@@ -27,7 +25,6 @@ import {
   SortingState,
   IntegratedPaging,
   IntegratedSorting,
-  SearchState,
   EditingState,
   FilteringState,
   IntegratedFiltering
@@ -63,7 +60,6 @@ import {
   GYM_ADMIN,
   GYM_ROLE,
   getUpdateMemberMutation,
-  GYM_TRAINER,
   getDeleteUserMutation
 } from "../../misc/shared/constants";
 
@@ -247,7 +243,6 @@ const DxGrid = () => {
                 columnExtensions={editingStateColumnExtensions}
               />
 
-              <SearchState />
               <FilteringState />
 
               <IntegratedSorting />
@@ -269,7 +264,6 @@ const DxGrid = () => {
                 }
               />
               <TableHeaderRow showSortingControls />
-              <Toolbar />
               <TableEditRow cellComponent={EditCell} />
               <TableEditColumn
                 showEditCommand={
@@ -283,7 +277,6 @@ const DxGrid = () => {
                 commandComponent={Command}
               />
               <PagingPanel pageSizes={pageSizes} />
-              <SearchPanel />
               <TableFilterRow cellComponent={FilterCell} />
             </Grid>
           </Paper>
