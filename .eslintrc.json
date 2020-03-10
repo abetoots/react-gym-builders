@@ -1,0 +1,35 @@
+{
+    "env": {
+        "browser": true,
+        "es6": true,
+        "jest": true,
+        "commonjs": true,
+        "node": true
+    },
+    "extends": ["eslint:recommended", "plugin:react/recommended", "plugin:jest/recommended"],
+    "globals": {
+        "Atomics": "readonly",
+        "SharedArrayBuffer": "readonly",
+        "BASE_URL": true,
+        "BASE_API_URL": true,
+        "GRAPHQL_URL": true
+    },
+    "parser": "babel-eslint",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 2018,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react",
+        "babel"
+    ],
+    "rules": {
+        "react/no-unescaped-entities": 0,
+        "no-unused-vars": ["error", {
+            "args": "none"
+        }]
+    }
+}
