@@ -26,13 +26,9 @@ module.exports = merge(common, {
         removeAttributeQuotes: true
       }
     }),
-    new CopyPlugin([
-      { from: "./public/_redirects", to: "./public/_redirects" }
-    ]),
+    new CopyPlugin([{ from: "./public/_redirects" }]),
     new webpack.DefinePlugin({
-      BASE_URL: JSON.stringify(
-        "https://builders-api.flerson.com/"
-      ),
+      BASE_URL: JSON.stringify("https://builders-api.flerson.com/"),
       BASE_API_URL: JSON.stringify(
         "https://builders-api.flerson.com/wp-json/wp/v2/"
       )
