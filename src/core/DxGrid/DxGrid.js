@@ -97,7 +97,6 @@ const DxGrid = () => {
   const [editingRowIds, getEditingRowIds] = useState([]); //IDs of the rows being edited.
   const [rowChanges, setRowChanges] = useState({}); //Not committed row changes.
   const [currentPage, setCurrentPage] = useState(0);
-  const [pageSize, setPageSize] = useState(10);
   const [pageSizes] = useState([10, 20, 50, 100]);
   const [editingStateColumnExtensions] = useState([
     { columnName: "userId", editingEnabled: false },
@@ -230,10 +229,7 @@ const DxGrid = () => {
                   { columnName: MEMBERSHIP_DURATION, direction: "desc" }
                 ]}
               />
-              <PagingState
-                onCurrentPageChange={setCurrentPage}
-                pageSize={pageSize}
-              />
+              <PagingState defaultCurrentPage={0} defaultPageSize={10} />
               <EditingState
                 editingRowIds={editingRowIds}
                 onEditingRowIdsChange={getEditingRowIds}
