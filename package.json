@@ -15,6 +15,8 @@
     "dependencies": {
         "@apollo/react-hooks": "^3.1.3",
         "@babel/runtime": "^7.8.7",
+        "@devexpress/dx-core": "2.4.0",
+        "@devexpress/dx-grid-core": "2.4.0",
         "@devexpress/dx-react-core": "^2.4.0",
         "@devexpress/dx-react-grid": "^2.4.0",
         "@devexpress/dx-react-grid-material-ui": "^2.4.0",
@@ -25,7 +27,10 @@
         "@loadable/component": "^5.12.0",
         "@material-ui/core": "^4.9.1",
         "@material-ui/icons": "^4.9.1",
+        "@types/react": "16.8.0",
         "apollo-boost": "^0.4.7",
+        "apollo-client": "2.6.4",
+        "apollo-utilities": "1.3.2",
         "graphiql": "^0.17.5",
         "graphql": "^14.6.0",
         "isomorphic-fetch": "^2.2.1",
@@ -37,6 +42,7 @@
         "react-dom": "^16.12.0",
         "react-router": "^5.1.2",
         "react-router-dom": "^5.1.2",
+        "typescript": "^3.8.3",
         "typography": "^0.16.19",
         "typography-theme-us-web-design-standards": "^0.16.19"
     },
