@@ -98,9 +98,11 @@ export const getCreateMemberMutation = data => {
                   "membership_duration_preset"
                 ] || ""}", 
                 gym_role: "${GYM_MEMBER}", 
-                membership_duration_specific: "${data[
-                  "membership_duration_specific"
-                ].toDateString() || ""}"
+                membership_duration_specific: "${
+                  data["membership_duration_specific"]
+                    ? data["membership_duration_specific"].toDateString()
+                    : ""
+                }"
             }) {
             userId
         }
