@@ -1,6 +1,6 @@
 {
     "name": "builders-plugin",
-    "version": "1.2.3",
+    "version": "1.2.4",
     "description": "",
     "scripts": {
         "start": "webpack-dev-server --hot --inline --config webpack.dev.js --open",
