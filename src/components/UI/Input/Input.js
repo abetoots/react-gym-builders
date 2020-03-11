@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import "./Input.scss";
 
@@ -39,6 +39,7 @@ const Input = props => {
                 inputKey={props.inputKey}
                 elementConfig={props.elementConfig}
                 customProps={props.customProps}
+                label={props.label}
               />
             );
             break;
@@ -54,6 +55,7 @@ const Input = props => {
                   }
                   onFocus={focusHandler}
                   onBlur={focusHandler}
+                  aria-labelledby={props.label.toLowerCase().replace(" ", "-")}
                 />
                 <div className="Input__line"></div>
               </>
@@ -69,6 +71,7 @@ const Input = props => {
             inputKey={props.inputKey}
             elementConfig={props.elementConfig}
             focusHandler={focusHandler}
+            label={props.label}
           />
         );
         break;
@@ -81,6 +84,7 @@ const Input = props => {
             inputKey={props.inputKey}
             elementConfig={props.elementConfig}
             focusHandler={focusHandler}
+            label={props.label}
           />
         );
         break;
@@ -92,6 +96,7 @@ const Input = props => {
             inputKey={props.inputKey}
             elementConfig={props.elementConfig}
             focusHandler={focusHandler}
+            label={props.label}
           />
         );
         break;
@@ -104,6 +109,7 @@ const Input = props => {
             handler={props.handler}
             inputKey={props.inputKey}
             focusHandler={focusHandler}
+            label={props.label}
           />
         );
         break;
@@ -122,6 +128,7 @@ const Input = props => {
         break;
 
       case "editor":
+        // eslint-disable-next-line react/prop-types
         inputElement = props.children;
         break;
 
@@ -137,6 +144,7 @@ const Input = props => {
               }
               onFocus={focusHandler}
               onBlur={focusHandler}
+              aria-labelledby={props.label.toLowerCase().replace(" ", "-")}
             />
             <div className="Input__line"></div>
           </>
@@ -164,6 +172,7 @@ const Input = props => {
             icon={props.iconConfig.icon}
           />
         );
+        break;
       default:
         return;
     }
@@ -171,7 +180,10 @@ const Input = props => {
 
   return (
     <div className="Input">
-      <label className="Input__label">
+      <label
+        id={props.label.toLowerCase().replace(" ", "-")}
+        className="Input__label"
+      >
         {props.label}
         {iconLabel}
       </label>
@@ -192,7 +204,13 @@ Input.propTypes = {
   elType: PropTypes.string.isRequired,
   label: PropTypes.string,
   description: PropTypes.string,
-  handler: PropTypes.func.isRequired
+  handler: PropTypes.func.isRequired,
+  elementConfig: PropTypes.object,
+  iconConfig: PropTypes.object,
+  inputKey: PropTypes.string,
+  state: PropTypes.object,
+  initialValue: PropTypes.any,
+  customProps: PropTypes.object
 };
 
 export default Input;
