@@ -1,3 +1,7 @@
+import React from "react";
+import { render } from "@testing-library/react";
+import { createMemoryHistory } from "history";
+import { Router } from "react-router-dom";
 import { REFRESH_TOKEN, JWT_AUTH_EXPIRATION, GYM_ROLE } from "./constants";
 
 /**
@@ -70,6 +74,13 @@ export const formatDateToYYYYMMDD = value => {
   return `${y + m + d}`;
 };
 
+export const updateObject = (oldState, newProperties) => {
+  return {
+    ...oldState,
+    ...newProperties
+  };
+};
+
 export const isDate = input => {
   if (Object.prototype.toString.call(input) === "[object Date]") return true;
   return false;
@@ -80,6 +91,24 @@ export const isFunction = value =>
   (Object.prototype.toString.call(value) === "[object Function]" ||
     "function" === typeof value ||
     value instanceof Function);
+
+export const isObject = function(obj) {
+  var type = typeof obj;
+  return type === "function" || (type === "object" && !!obj);
+};
+
+export const fileSizeExceeds = (file, validSize) => {
+  if (file.constructor !== File) {
+    return new Error("Not a file");
+  }
+
+  if (typeof validSize !== "number") {
+    return new Error("Not a number");
+  }
+  //Check by megabytes
+  //True if filesize bigger than valid size * 1024
+  return Math.round(file.size / 1024) >= 1024 * validSize;
+};
 
 export const cleanupLocalStorage = () => {
   console.log("Cleanup localstorage...");
@@ -97,4 +126,22 @@ export const setupLocalStorage = data => {
     data.login.user[JWT_AUTH_EXPIRATION]
   );
   localStorage.setItem(GYM_ROLE, data.login.user[GYM_ROLE]);
+};
+
+// this is a handy function for any component we need to test
+// that relies on the router being in context
+export const renderWithRouter = (
+  ui,
+  {
+    route = "/",
+    history = createMemoryHistory({ initialEntries: [route] })
+  } = {}
+) => {
+  return {
+    ...render(<Router history={history}>{ui}</Router>),
+    // adding `history` to the returned utilities to allow us
+    // to reference it in our tests (just try to avoid using
+    // this to test implementation details).
+    history
+  };
 };
