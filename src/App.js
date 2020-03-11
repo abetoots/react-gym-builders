@@ -8,8 +8,8 @@ import RoutesList from "./core/RoutesList/RoutesList";
 import BoundaryUI from "./hoc/BoundaryUI/BoundaryUI";
 import BoundaryRedirect from "./hoc/BoundaryRedirect/BoundaryRedirect";
 
-//Shared, globals, utils
-import tokenStore from "./misc/store/authentication";
+//Misc
+import authStore from "./misc/store/authentication";
 import userStore from "./misc/store/users";
 import { useStore, combineStore } from "./misc/store/store-core";
 import { list } from "./misc/shared/link-list";
@@ -18,13 +18,13 @@ import { useRefreshToken } from "./misc/hooks/auth";
 import { REFRESH_TOKEN } from "./misc/shared/constants";
 
 combineStore({
-  token: tokenStore,
+  auth: authStore,
   users: userStore
 });
 
 const App = () => {
   const routes = uniqueRoutes(list.flat());
-  const [globalState, dispatch] = useStore("token");
+  const [globalState, dispatch] = useStore("auth");
   const [mounted, setMounted] = useState(false);
 
   const [

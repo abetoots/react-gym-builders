@@ -15,7 +15,7 @@ import { getLoginMutation } from "../../misc/shared/constants";
 
 const Login = props => {
   const [formState, setFormState] = useFormState();
-  const [globalState, dispatch] = useStore("token");
+  const [globalState, dispatch] = useStore("auth");
   const [startLogin] = useLazyLoginMutation(dispatch);
   const [error, setError] = useState("");
 
