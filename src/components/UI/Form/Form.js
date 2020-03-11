@@ -57,7 +57,8 @@ Form.propTypes = {
   loading: PropTypes.bool,
   error: PropTypes.string,
   success: PropTypes.bool,
-  btnText: PropTypes.string
+  btnText: PropTypes.string,
+  formStyles: PropTypes.object
 };
 
 export default Form;
