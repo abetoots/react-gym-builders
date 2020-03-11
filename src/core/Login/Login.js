@@ -60,7 +60,7 @@ const Login = props => {
               elType={input.elType}
               initialValue={input.initialValue}
               elementConfig={input.elementConfig}
-              customProps={input.customProps || ""}
+              customProps={input.customProps || {}}
               iconConfig={input.iconConfig || ""}
             />
           );
