@@ -27,7 +27,8 @@ const BurgerMenu = props => {
 
 BurgerMenu.propTypes = {
   handleClick: PropTypes.func.isRequired,
-  toggled: PropTypes.bool
+  toggled: PropTypes.bool,
+  hideLabel: PropTypes.bool
 };
 
 export default BurgerMenu;
