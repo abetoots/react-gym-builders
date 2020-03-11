@@ -10,7 +10,7 @@ import App from "./App";
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "@apollo/react-hooks";
 
-//shared
+//Misc
 import { tokenCache } from "./misc/hooks/auth";
 
 export const client = new ApolloClient({

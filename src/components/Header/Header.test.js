@@ -3,7 +3,7 @@ import Header from "./Header";
 import { renderWithRouter } from "../../misc/shared/helper-funcs";
 
 describe("Header", () => {
-  it("finds a hidden navigation menu", () => {
+  it("finds a navigation menu", () => {
     const { getByRole } = renderWithRouter(<Header />);
     const menu = getByRole("navigation");
     expect(menu).toBeInTheDocument();

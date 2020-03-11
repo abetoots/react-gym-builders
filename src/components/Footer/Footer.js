@@ -4,8 +4,8 @@ import "./Footer.scss";
 const Footer = props => (
   <footer className="Footer">
     <div>
-      {new Date().getFullYear()} Builders | All rights reserved. Copyright
-      &copy;.
+      {new Date().getFullYear()} Copyright &copy;. Builders | All rights
+      reserved.
       <span role="img">❤️</span>
     </div>
     <div>
