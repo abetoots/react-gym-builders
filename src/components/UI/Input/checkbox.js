@@ -28,7 +28,10 @@ const Checkbox = props => {
   };
 
   return (
-    <ul className="Checkbox">
+    <ul
+      className="Checkbox"
+      aria-labelledby={props.label.toLowerCase().replace(" ", "-")}
+    >
       {props.elementConfig.options.map(option => {
         return (
           <li key={option} className="Checkbox__li">
@@ -47,7 +50,7 @@ const Checkbox = props => {
               onFocus={props.focusHandler}
               onBlur={props.focusHandler}
             />
-            <label htmlFor={item}>{item}</label>
+            <label htmlFor={option}>{option}</label>
           </li>
         );
       })}
@@ -61,7 +64,8 @@ Checkbox.propTypes = {
   focusHandler: PropTypes.func,
   elementConfig: PropTypes.shape({
     options: PropTypes.arrayOf(PropTypes.string)
-  }).isRequired
+  }).isRequired,
+  label: PropTypes.string
 };
 
 export default Checkbox;

@@ -8,16 +8,22 @@ const TextArea = props => {
       className="Textarea"
       {...props.elementConfig}
       value={props.state[props.inputKey]}
-      onChange={event => handler(props.inputKey, event.target.value)}
+      onChange={event => props.handler(props.inputKey, event.target.value)}
       onFocus={props.focusHandler}
       onBlur={props.focusHandler}
+      aria-labelledby={props.label.toLowerCase().replace(" ", "-")}
     />
   );
 };
 
 TextArea.propTypes = {
   initialValue: PropTypes.string.isRequired,
-  inputKey: PropTypes.string.isRequired
+  inputKey: PropTypes.string.isRequired,
+  elementConfig: PropTypes.object,
+  state: PropTypes.object,
+  focusHandler: PropTypes.func,
+  label: PropTypes.string,
+  handler: PropTypes.func
 };
 
 export default TextArea;

@@ -10,6 +10,7 @@ const Select = props => {
       onChange={event => props.handler(props.inputKey, event.target.value)}
       onFocus={props.focusHandler}
       onBlur={props.focusHandler}
+      aria-labelledby={props.label.toLowerCase().replace(" ", "-")}
     >
       {props.elementConfig.options.map(option => (
         <option key={option.value} value={option.value}>
@@ -31,7 +32,10 @@ Select.propTypes = {
       })
     ).isRequired
   }),
-  focusHandler: PropTypes.func.isRequired
+  focusHandler: PropTypes.func.isRequired,
+  handler: PropTypes.func,
+  state: PropTypes.object,
+  label: PropTypes.string
 };
 
 export default Select;

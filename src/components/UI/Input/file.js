@@ -60,6 +60,7 @@ const File = props => {
         {...props.elementConfig}
         onChange={event => fileHandler(props.inputKey, event, props.handler)}
         ref={fileInputEl}
+        aria-labelledby={props.label.toLowerCase().replace(" ", "-")}
       />
     </div>
   );
@@ -78,7 +79,10 @@ File.propTypes = {
   }),
   customProps: PropTypes.shape({
     btnText: PropTypes.string
-  })
+  }),
+  label: PropTypes.string,
+  state: PropTypes.object,
+  handler: PropTypes.func
 };
 
 export default File;

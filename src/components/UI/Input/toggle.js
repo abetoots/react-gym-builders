@@ -27,6 +27,7 @@ const Toggle = props => {
         onChange={event => toggleHandler(props.inputKey, event, props.handler)}
         onFocus={props.focusHandler}
         onBlur={props.focusHandler}
+        aria-lablledby={props.label.toLowerCase().replace(" ", "-")}
       />
     </div>
   );
@@ -35,7 +36,8 @@ const Toggle = props => {
 Toggle.propTypes = {
   initialValue: PropTypes.bool,
   inputKey: PropTypes.string.isRequired,
-  focusHandler: PropTypes.func
+  focusHandler: PropTypes.func,
+  label: PropTypes.string
 };
 
 export default Toggle;
