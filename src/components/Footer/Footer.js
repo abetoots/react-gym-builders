@@ -1,11 +1,11 @@
 import React from "react";
-import PropTypes from "prop-types";
 import "./Footer.scss";
 
 const Footer = props => (
   <footer className="Footer">
     <div>
-      {new Date().getFullYear()} Builders | All rights reserved.
+      {new Date().getFullYear()} Builders | All rights reserved. Copyright
+      &copy;.
       <span role="img">❤️</span>
     </div>
     <div>
