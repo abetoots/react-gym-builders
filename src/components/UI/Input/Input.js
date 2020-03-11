@@ -206,7 +206,7 @@ Input.propTypes = {
   description: PropTypes.string,
   handler: PropTypes.func.isRequired,
   elementConfig: PropTypes.object,
-  iconConfig: PropTypes.object,
+  iconConfig: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   inputKey: PropTypes.string,
   state: PropTypes.object,
   initialValue: PropTypes.any,
