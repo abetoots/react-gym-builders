@@ -12,7 +12,7 @@ const Checkbox = props => {
   const checkboxHandler = (inputKey, event, handler) => {
     //we make a copy (avoid referencing original array)
     //that we'll set as the new value at the end of this function
-    const copy = [...props.state[inputKey]];
+    let copy = [...props.state[inputKey]];
     //if checkbox is about to be checked
     if (event.target.checked) {
       //push the value to the copied array
@@ -42,7 +42,7 @@ const Checkbox = props => {
               value={option}
               checked={
                 props.state[props.inputKey].includes(option) ||
-                option === props.initialValue
+                props.initialValue.includes(option)
               }
               onChange={event =>
                 checkboxHandler(props.inputKey, event, props.handler)
@@ -59,13 +59,15 @@ const Checkbox = props => {
 };
 
 Checkbox.propTypes = {
-  initialValue: PropTypes.string,
+  initialValue: PropTypes.arrayOf(PropTypes.string),
   inputKey: PropTypes.string.isRequired,
   focusHandler: PropTypes.func,
   elementConfig: PropTypes.shape({
     options: PropTypes.arrayOf(PropTypes.string)
   }).isRequired,
-  label: PropTypes.string
+  label: PropTypes.string,
+  state: PropTypes.object,
+  handler: PropTypes.func
 };
 
 export default Checkbox;
