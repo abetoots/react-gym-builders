@@ -15,16 +15,20 @@ import { useStore, combineStore } from "./misc/store/store-core";
 import { list } from "./misc/shared/link-list";
 import { uniqueRoutes } from "./misc/shared/helper-funcs";
 import { useRefreshToken } from "./misc/hooks/auth";
-import { REFRESH_TOKEN } from "./misc/shared/constants";
+import {
+  REFRESH_TOKEN,
+  AUTH_STORE,
+  USERS_STORE
+} from "./misc/shared/constants";
 
 combineStore({
-  auth: authStore,
-  users: userStore
+  [AUTH_STORE]: authStore,
+  [USERS_STORE]: userStore
 });
 
 const App = () => {
   const routes = uniqueRoutes(list.flat());
-  const [globalState, dispatch] = useStore("auth");
+  const [globalState, dispatch] = useStore(AUTH_STORE);
   const [mounted, setMounted] = useState(false);
 
   const [
