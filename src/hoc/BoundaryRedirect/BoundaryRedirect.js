@@ -19,7 +19,8 @@ const BoundaryRedirect = props => {
 BoundaryRedirect.propTypes = {
   if: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   ifTrueTo: PropTypes.string,
-  ifFalseTo: PropTypes.string
+  ifFalseTo: PropTypes.string,
+  children: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType])
 };
 
 export default BoundaryRedirect;
