@@ -5,15 +5,17 @@ import Layout from "../../components/layout";
 import Form from "../../components/UI/Form/Form";
 import Input from "../../components/UI/Input/Input";
 
+//Misc
 import { useStore } from "../../misc/store/store-core";
 import inputs, { useFormState } from "../../misc/forms/register";
 import { tokenCache } from "../../misc/hooks/auth";
 import { useLazyFetchQuery } from "../../misc/hooks/util";
-import { getCreateMemberMutation } from "../../misc/shared/constants";
+import { USERS_STORE } from "../../misc/shared/constants";
+import { getCreateMemberMutation } from "../../misc/shared/mutations";
 
 const Register = props => {
   const [formState, setFormState] = useFormState();
-  const [globalState, dispatch] = useStore("users");
+  const [globalState, dispatch] = useStore(USERS_STORE);
 
   const [createMember] = useLazyFetchQuery(GRAPHQL_URL, tokenCache.token);
 

@@ -11,11 +11,12 @@ import { useLazyLoginMutation } from "../../misc/hooks/auth";
 
 import inputs, { useFormState } from "../../misc/forms/login";
 import { useStore } from "../../misc/store/store-core";
-import { getLoginMutation } from "../../misc/shared/constants";
+import { AUTH_STORE } from "../../misc/shared/constants";
+import { getLoginMutation } from "../../misc/shared/mutations";
 
 const Login = props => {
   const [formState, setFormState] = useFormState();
-  const [globalState, dispatch] = useStore("auth");
+  const [globalState, dispatch] = useStore(AUTH_STORE);
   const [startLogin] = useLazyLoginMutation(dispatch);
   const [error, setError] = useState("");
 
