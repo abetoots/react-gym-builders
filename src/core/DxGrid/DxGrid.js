@@ -52,19 +52,23 @@ import { useLazyFetchQuery } from "../../misc/hooks/util";
 import { useStore } from "../../misc/store/store-core";
 
 import {
-  GET_GYM_MEMBERS_QUERY,
   FULL_NAME,
   MEMBERSHIP_DURATION,
   IS_STUDENT,
   BRANCH,
   GYM_ADMIN,
   GYM_ROLE,
-  getUpdateMemberMutation,
-  getDeleteUserMutation
+  USERS_STORE
 } from "../../misc/shared/constants";
 
+import {
+  GET_GYM_MEMBERS_QUERY,
+  getUpdateMemberMutation,
+  getDeleteUserMutation
+} from "../../misc/shared/mutations";
+
 const DxGrid = () => {
-  const [globalState, dispatch] = useStore("users");
+  const [globalState, dispatch] = useStore(USERS_STORE);
 
   const [columns] = useState([
     { name: "userId", title: "ID" },
