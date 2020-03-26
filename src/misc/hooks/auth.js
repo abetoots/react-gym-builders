@@ -1,10 +1,7 @@
 import { useState, useEffect } from "react";
 
-import {
-  JWT_AUTH_EXPIRATION,
-  AUTH_TOKEN,
-  getRefreshMutation
-} from "../shared/constants";
+import { JWT_AUTH_EXPIRATION, AUTH_TOKEN } from "../shared/constants";
+import { getRefreshMutation } from "../shared/mutations";
 import { setupLocalStorage, cleanupLocalStorage } from "../shared/helper-funcs";
 
 //Follow this auth flow : https://hasura.io/blog/best-practices-of-using-jwt-with-graphql/#jwt_persist
