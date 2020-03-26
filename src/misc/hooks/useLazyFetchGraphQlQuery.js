@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-export const useLazyFetchQuery = (graphqlUrl, token) => {
+export const useLazyFetchGraphQlQuery = (graphqlUrl, token) => {
   if (!token) {
     return;
   }
